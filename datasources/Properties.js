@@ -2,14 +2,13 @@
 const mysql = require('mysql');
 let connected = false;
 
-// TODO pull out credentials into docker compose files
 // TODO create one connections file for multiple datasources
 const connection = mysql.createConnection({
-    host: 'localhost',
-    port: 3308,
-    user: 'root',
-    password: 'helloworld',
-    database: 'testapp',
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT, // use 3308 when not in docker
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_ROOT_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
 });
 
 connection.connect((err) => {
