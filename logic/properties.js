@@ -16,7 +16,7 @@ const DEFAULT_ROWS_RETURNED = 100;
 const DEFAULT_DISTANCE_IN_METERES = 1600;
 
 // datasource layer
-const PropertiesDatasource = require('datasources/properties');
+const propertiesDatasource = require('datasources/properties');
 
 // Compare two objects with nlpHit scores.
 function nlpCompare(a, b) {
@@ -29,6 +29,7 @@ function nlpCompare(a, b) {
     return 0;
 }
 
+// Get a list of properties based on a set of query parameters.
 async function getProperties(latitude, longitude, distance, query) {
     let propertyList = [];
     
@@ -44,12 +45,12 @@ async function getProperties(latitude, longitude, distance, query) {
         const eastBound = geolib.moveTo({lat: latitude, lon: longitude}, {distance, heading: EAST_IN_DEGREES});
         const westBound = geolib.moveTo({lat: latitude, lon: longitude}, {distance, heading: WEST_IN_DEGREES});
         
-        propertyList = await PropertiesDatasource.getPropertiesByBounds(northBound, southBound, eastBound, westBound, DEFAULT_QUERY_LIMIT);
+        propertyList = await propertiesDatasource.getPropertiesByBounds(northBound, southBound, eastBound, westBound, DEFAULT_QUERY_LIMIT);
     } else {
 
         // query random rows
         // TODO This is not really random. Fix database query if random is desired. 
-        propertyList = await PropertiesDatasource.getPropertiesByBounds(NORTH_POLE, SOUTH_POLE, EAST_POLE, WEST_POLE, DEFAULT_QUERY_LIMIT);
+        propertyList = await propertiesDatasource.getPropertiesByBounds(NORTH_POLE, SOUTH_POLE, EAST_POLE, WEST_POLE, DEFAULT_QUERY_LIMIT);
     }
 
     // TODO For each property, check distance to the given lat long. It may be slightly longer because we are using a bound approach
@@ -89,7 +90,7 @@ async function getProperties(latitude, longitude, distance, query) {
         // TODO remove nlpHit if considered part of the secret sauce
     }
 
-    // return top 100 
+    // return top rows 
     return propertyList.slice(0, DEFAULT_ROWS_RETURNED);
 }
 

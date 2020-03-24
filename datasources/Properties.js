@@ -36,21 +36,8 @@ function disconnect() {
     });
 }
 
-/**
- * Return a list of properties inside a square boundry.
- * @param {*} northBound 
- * @param {*} southBound 
- * @param {*} eastBound 
- * @param {*} westBound 
- * @param {*} rowLimit 
- */
+// Get a set of properties from the mysql database given a set of query inputs. 
 async function getPropertiesByBounds(northBound, southBound, eastBound, westBound, rowLimit) {
-
-    /**
-     * MySql does not understand that latitudes Sort latitude and longitude by the highest and lowest. 
-     *  
-     **/ 
-    let highestLat = northBound;
 
     return new Promise((resolve, reject) => {
         let sql = `SELECT * FROM Properties 
@@ -67,8 +54,6 @@ async function getPropertiesByBounds(northBound, southBound, eastBound, westBoun
             }
         });
     });
-
-
 }
 
 // TODO add to healthcheck route
@@ -79,4 +64,5 @@ function isConnected() {
 module.exports = {
     disconnect,
     getPropertiesByBounds,
+    isConnected,
 };

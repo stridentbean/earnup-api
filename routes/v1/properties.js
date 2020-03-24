@@ -6,9 +6,11 @@ const validator = require('utils/validator');
 const safeHandler = require('utils/safeHandler');
 
 // logic layer
-const PropertiesLogic = require('logic/properties');
+const propertiesLogic = require('logic/properties');
 
-// 
+// Validate an incoming request for properties.
+// TODO make this a get request that uses querystrings instead of a POST request.
+// It would be more RESTful and likely more accepted by developers.
 router.post('/', safeHandler(async (req, res, next) => {
 
     const latitude = req.body.latitude;
@@ -38,7 +40,7 @@ router.post('/', safeHandler(async (req, res, next) => {
       return next(error);
     }
 
-    propertyList = await PropertiesLogic.getProperties(latitude, longitude, distance, query);
+    propertyList = await propertiesLogic.getProperties(latitude, longitude, distance, query);
 
     res.json(propertyList);
   }));
